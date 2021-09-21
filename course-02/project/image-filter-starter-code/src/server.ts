@@ -18,11 +18,6 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
   // IT SHOULD
   //    2. call filterImageFromURL(image_url) to filter the image
   //    3. send the resulting file in the response
-  //    4. deletes any files on the server on finish of the response
-  // QUERY PARAMATERS
-  //    image_url: URL of a publicly accessible image
-  // RETURNS
-  //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   app.get("/filteredimage", async (req: Request, res: Response) => {
     const imageURL: string = req.query.image_url;
@@ -44,7 +39,14 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
       });
     }
 
-    res.send({ imageURL });
+    try {
+      const filteredImagePath = await filterImageFromURL(imageURL);
+      res.sendFile(filteredImagePath, (error: Error) => {
+        deleteLocalFiles([filteredImagePath]);
+      });
+    } catch (error) {
+      res.status(500).send({ message: "Could not process request" });
+    }
   });
 
   // Root Endpoint
