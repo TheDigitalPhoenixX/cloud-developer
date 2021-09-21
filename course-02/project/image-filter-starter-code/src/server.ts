@@ -45,7 +45,7 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
         deleteLocalFiles([filteredImagePath]);
       });
     } catch (error) {
-      res.status(500).send({ message: "Could not process request" });
+      res.status(422).send({ message: "Could not process request" });
     }
   });
 
