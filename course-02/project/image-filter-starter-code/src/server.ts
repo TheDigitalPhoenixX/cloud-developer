@@ -33,7 +33,7 @@ import { filterImageFromURL, deleteLocalFiles } from "./util/util";
     }
 
     try {
-      const filteredImagePath = await filterImageFromURL(imageURL);
+      const filteredImagePath: string = await filterImageFromURL(imageURL);
       res.sendFile(filteredImagePath, (error: Error) => {
         deleteLocalFiles([filteredImagePath]);
       });
